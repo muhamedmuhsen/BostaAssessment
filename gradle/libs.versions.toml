@@ -12,6 +12,7 @@ hilt = "2.52"
 ksp = "2.0.21-1.0.27"
 hiltNavigationCompose = "1.2.0"
 retrofit = "2.11.0"
+compose-google-fonts = "1.7.5"
 
 
 [libraries]
@@ -35,6 +36,7 @@ hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.r
 androidx-hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 retrofit-converter-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit" }
+androidx-compose-ui-text-google-fonts = { group = "androidx.compose.ui", name = "ui-text-google-fonts", version.ref = "compose-google-fonts" }
 
 
 [plugins]
