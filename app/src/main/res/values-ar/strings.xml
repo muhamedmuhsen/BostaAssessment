@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">بوسطة</string>
+    <string name="error_unauthorized">دخول غير مصرح به. يرجى تسجيل الدخول مرة أخرى.</string>
+    <string name="error_not_found">المورد المطلوب غير موجود.</string>
+    <string name="error_bad_request">طلب خاطئ. يرجى المحاولة مرة أخرى.</string>
+    <string name="error_no_internet">لا يوجد اتصال بالإنترنت. يرجى التحقق من الشبكة.</string>
+    <string name="error_timeout">انتهت مهلة الطلب. يرجى المحاولة لاحقاً.</string>
+    <string name="error_server">خطأ في الخادم. يرجى المحاولة لاحقاً.</string>
+    <string name="error_unexpected">حدث خطأ غير متوقع.</string>
+    <string name="error_invalid_response">تم استلام استجابة غير صالحة من الخادم.</string>
+    <string name="error_too_many_requests">طلبات كثيرة جداً. يرجى الانتظار قليلاً.</string>
+    <string name="choose_delivery_area">اختر منطقة التوصيل</string>
+    <string name="close">إغلاق</string>
+    <string name="search_placeholder">المدينة/المنطقة</string>
+</resources>
