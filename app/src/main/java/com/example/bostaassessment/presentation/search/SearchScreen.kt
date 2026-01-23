@@ -17,6 +17,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -40,6 +41,10 @@ fun SearchScreen(
     val state = viewModel.uiState.collectAsStateWithLifecycle()
     val appLanguage = currentAppLocale().language
 
+    LaunchedEffect(Unit) {
+        viewModel.onSearchClicked()
+    }
+
     Scaffold(
         modifier = modifier,
         topBar = {
@@ -56,7 +61,7 @@ fun SearchScreen(
                     style = MaterialTheme.typography.titleLarge.copy(
                         fontWeight = FontWeight.ExtraBold
                     ),
-                    color = Color.Black
+                    color = MaterialTheme.colorScheme.onBackground
                 )
                 Icon(
                     imageVector = Icons.Default.Close,
@@ -76,16 +81,16 @@ fun SearchScreen(
                 onValueChange = viewModel::onSearchQueryChange,
                 state = state.value
             )
-            CitiesAndItsDistricts(state.value.cities, appLanguage)
+            CitiesAndItsDistricts(state.value, appLanguage)
         }
     }
 }
 
 @Composable
-fun CitiesAndItsDistricts(cities: List<Data>,appLanguage:String) {
+fun CitiesAndItsDistricts(state: SearchUiState, appLanguage: String) {
     LazyColumn(modifier = Modifier.fillMaxWidth()) {
-        items(cities) { city ->
-            Cities(city = if(appLanguage == "en") city.cityName else city.cityOtherName)
+        items(state.filteredCities) { city ->
+            Cities(city = if (appLanguage == "en") city.cityName else city.cityOtherName)
         }
     }
 }

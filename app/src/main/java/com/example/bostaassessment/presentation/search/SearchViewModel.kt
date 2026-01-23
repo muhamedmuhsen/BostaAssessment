@@ -19,29 +19,37 @@ class SearchViewModel @Inject constructor(private val searchUseCase: SearchUseCa
     private val _uiState = MutableStateFlow(SearchUiState())
     val uiState: StateFlow<SearchUiState> = _uiState
 
-    init {
-        onSearchClicked()
-    }
-    fun onSearchQueryChange(searchQuery: String){
+    fun onSearchQueryChange(searchQuery: String) {
         _uiState.value = _uiState.value.copy(searchQuery = searchQuery)
+        filterCitiesAndDistricts(_uiState.value.searchQuery)
     }
+
+    private fun filterCitiesAndDistricts(searchQuery: String) {
+        _uiState.value = _uiState.value.copy(filteredCities = _uiState.value.cities.filter
+        { city ->
+            city.cityName.contains(searchQuery, ignoreCase = true) ||
+                    city.districts.any { it.districtName.contains(searchQuery, ignoreCase = true) }
+        }
+        )
+    }
+
     fun onSearchClicked() {
         _uiState.value = _uiState.value.copy(searchState = UiState.Loading)
         viewModelScope.launch {
             when (val result = searchUseCase()) {
                 is Result.Success -> {
-                    Log.d("SearchViewModel", "onSearchClicked: ${result.data}")
                     _uiState.value = _uiState.value.copy(
                         searchState = UiState.Success(result.data),
-                        cities = result.data.data
+                        cities = result.data.data,
+                        filteredCities = result.data.data
                     )
                 }
+
                 is Result.Error -> {
-                    Log.d("SearchViewModel", "onSearchClicked: ${result.error}")
-                    _uiState.value = _uiState.value.copy(searchState = UiState.Error(result.error.asUiText()),)
+                    _uiState.value =
+                        _uiState.value.copy(searchState = UiState.Error(result.error.asUiText()))
                 }
             }
         }
     }
-
 }
