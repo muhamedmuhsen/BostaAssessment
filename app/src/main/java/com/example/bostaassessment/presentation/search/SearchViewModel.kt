@@ -1,6 +1,5 @@
 package com.example.bostaassessment.presentation.search
 
-import android.util.Log
 import com.example.bostaassessment.domain.util.Result
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -10,6 +9,7 @@ import com.example.bostaassessment.presentation.utils.strings.asUiText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -20,34 +20,43 @@ class SearchViewModel @Inject constructor(private val searchUseCase: SearchUseCa
     val uiState: StateFlow<SearchUiState> = _uiState
 
     fun onSearchQueryChange(searchQuery: String) {
-        _uiState.value = _uiState.value.copy(searchQuery = searchQuery)
+        _uiState.update { _uiState.value.copy(searchQuery = searchQuery) }
         filterCitiesAndDistricts(_uiState.value.searchQuery)
     }
 
     private fun filterCitiesAndDistricts(searchQuery: String) {
-        _uiState.value = _uiState.value.copy(filteredCities = _uiState.value.cities.filter
-        { city ->
-            city.cityName.contains(searchQuery, ignoreCase = true) ||
-                    city.districts.any { it.districtName.contains(searchQuery, ignoreCase = true) }
+        _uiState.update { state ->
+            state.copy(
+                filteredCities = state.cities.filter { city ->
+                    city.cityName.contains(searchQuery, ignoreCase = true) ||
+
+                            city.districts.any {
+                        it.districtName.contains(
+                            searchQuery,
+                            ignoreCase = true
+                        )
+                    }
+                })
         }
-        )
     }
 
-    fun onSearchClicked() {
-        _uiState.value = _uiState.value.copy(searchState = UiState.Loading)
+    fun loadCitiesAndDistricts() {
+        _uiState.update { _uiState.value.copy(searchState = UiState.Loading) }
         viewModelScope.launch {
             when (val result = searchUseCase()) {
                 is Result.Success -> {
-                    _uiState.value = _uiState.value.copy(
-                        searchState = UiState.Success(result.data),
-                        cities = result.data.data,
-                        filteredCities = result.data.data
-                    )
+                    _uiState.update {
+                        _uiState.value.copy(
+                            searchState = UiState.Success(result.data),
+                            cities = result.data.data,
+                            filteredCities = result.data.data
+                        )
+                    }
                 }
-
                 is Result.Error -> {
-                    _uiState.value =
+                    _uiState.update {
                         _uiState.value.copy(searchState = UiState.Error(result.error.asUiText()))
+                    }
                 }
             }
         }

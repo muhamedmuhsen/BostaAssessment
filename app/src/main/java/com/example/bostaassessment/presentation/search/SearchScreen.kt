@@ -20,7 +20,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -28,7 +27,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.bostaassessment.R
-import com.example.bostaassessment.domain.model.Data
 import com.example.bostaassessment.presentation.search.components.Cities
 import com.example.bostaassessment.presentation.search.components.SearchBar
 import com.example.bostaassessment.presentation.utils.locale.currentAppLocale
@@ -42,7 +40,7 @@ fun SearchScreen(
     val appLanguage = currentAppLocale().language
 
     LaunchedEffect(Unit) {
-        viewModel.onSearchClicked()
+        viewModel.loadCitiesAndDistricts()
     }
 
     Scaffold(
