@@ -8,5 +8,7 @@ data class SearchUiState(
     val searchQuery: String = "",
     val cities: List<Data> = emptyList(),
     val filteredCities: List<Data> = emptyList(),
+    val isCityClicked: Boolean = false,
+    val selectedCityId: List<String> = emptyList(),
     val searchState: UiState<Districts> = UiState.Idle
 )

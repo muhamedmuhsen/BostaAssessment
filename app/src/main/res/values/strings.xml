@@ -12,4 +12,6 @@
     <string name="choose_delivery_area">Choose the delivery area</string>
     <string name="close">Close</string>
     <string name="search_placeholder">City/Area</string>
+    <string name="uncovered">Uncovered</string>
+    <string name="district_format">%1$s - %2$s</string>
 </resources>

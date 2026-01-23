@@ -19,6 +19,9 @@ class SearchViewModel @Inject constructor(private val searchUseCase: SearchUseCa
     private val _uiState = MutableStateFlow(SearchUiState())
     val uiState: StateFlow<SearchUiState> = _uiState
 
+    init {
+        loadCitiesAndDistricts()
+    }
     fun onSearchQueryChange(searchQuery: String) {
         _uiState.update { _uiState.value.copy(searchQuery = searchQuery) }
         filterCitiesAndDistricts(_uiState.value.searchQuery)
@@ -31,12 +34,24 @@ class SearchViewModel @Inject constructor(private val searchUseCase: SearchUseCa
                     city.cityName.contains(searchQuery, ignoreCase = true) ||
 
                             city.districts.any {
-                        it.districtName.contains(
-                            searchQuery,
-                            ignoreCase = true
-                        )
-                    }
+                                it.districtName.contains(
+                                    searchQuery, ignoreCase = true
+                                )
+                            }
                 })
+        }
+    }
+
+    fun onCityClicked(cityId: String) {
+        _uiState.update {
+            _uiState.value.copy(
+                isCityClicked = !_uiState.value.isCityClicked,
+                selectedCityId = if (!_uiState.value.isCityClicked) {
+                    _uiState.value.selectedCityId.plus(cityId)
+                } else {
+                    _uiState.value.selectedCityId.minus(cityId)
+                }
+            )
         }
     }
 
@@ -53,6 +68,7 @@ class SearchViewModel @Inject constructor(private val searchUseCase: SearchUseCa
                         )
                     }
                 }
+
                 is Result.Error -> {
                     _uiState.update {
                         _uiState.value.copy(searchState = UiState.Error(result.error.asUiText()))

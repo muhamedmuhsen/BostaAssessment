@@ -12,4 +12,6 @@
     <string name="choose_delivery_area">اختر منطقة التوصيل</string>
     <string name="close">إغلاق</string>
     <string name="search_placeholder">المدينة/المنطقة</string>
+    <string name="uncovered">غير مغطى</string>
+    <string name="district_format">%1$s - %2$s</string>
 </resources>

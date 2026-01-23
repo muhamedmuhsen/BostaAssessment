@@ -8,27 +8,42 @@ import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 
 private val DarkColorScheme = darkColorScheme(
     primary = Purple80,
     secondary = PurpleGrey80,
-    tertiary = Pink80
+    tertiary = Pink80,
+    background = DarkBg,
+    surface = DarkBg,
+    onBackground = LightText,
+    onSurface = LightText,
+    surfaceVariant = Color(0xFF1E293B),
+    onSurfaceVariant = LightText,
+    outlineVariant = FadedTextDark,
+    errorContainer = Color(0xFF334155),
+    surfaceBright = FadedTextDark
 )
 
 private val LightColorScheme = lightColorScheme(
     primary = Purple40,
     secondary = PurpleGrey40,
-    tertiary = Pink40
+    tertiary = Pink40,
+    background = Color.White,
+    surface = Color.White,
+    onBackground = DarkBlueText,
+    onSurface = DarkBlueText,
+    surfaceVariant = LightGrayBg,
+    onSurfaceVariant = DarkBlueText,
+    outlineVariant = FadedText,
+    errorContainer = Color.White,
+    surfaceBright = FadedText
 
     /* Other default colors to override
-    background = Color(0xFFFFFBFE),
-    surface = Color(0xFFFFFBFE),
     onPrimary = Color.White,
     onSecondary = Color.White,
     onTertiary = Color.White,
-    onBackground = Color(0xFF1C1B1F),
-    onSurface = Color(0xFF1C1B1F),
     */
 )
 
@@ -36,7 +51,7 @@ private val LightColorScheme = lightColorScheme(
 fun BostaAssessmentTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
+    dynamicColor: Boolean = false, // Disabled dynamic color to ensure my custom colors are used
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {

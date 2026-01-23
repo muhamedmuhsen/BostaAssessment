@@ -12,4 +12,6 @@ data class District(
     val zoneId: String,
     val zoneName: String,
     val zoneOtherName: String
-)
+) {
+    fun isCovered(): Boolean = pickupAvailability || dropOffAvailability
+}

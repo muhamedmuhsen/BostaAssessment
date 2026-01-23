@@ -1,14 +1,15 @@
 package com.example.bostaassessment.presentation.search.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -17,17 +18,22 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.bostaassessment.domain.model.Data
+import com.example.bostaassessment.presentation.utils.locale.AppLanguage
 
 @Composable
 fun Cities(
     modifier: Modifier = Modifier,
-    city: String
+    city: Data,
+    isExpanded: Boolean,
+    appLanguage: String,
+    onCityClicked: () -> Unit
 ) {
     Column(
         modifier = modifier
             .fillMaxWidth()
+            .clickable { onCityClicked() }
     ) {
         Row(
             modifier = Modifier
@@ -37,14 +43,21 @@ fun Cities(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
-                text = city,
+                text =if(appLanguage == AppLanguage.ENGLISH.code) city.cityName else city.cityOtherName,
                 style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Medium
             )
             Icon(
-                imageVector = Icons.Default.KeyboardArrowDown,
+                imageVector = if (isExpanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
                 contentDescription = null,
-                tint =    MaterialTheme.colorScheme.outlineVariant
+                tint = MaterialTheme.colorScheme.outlineVariant
+            )
+
+        }
+        if (isExpanded) {
+            DistrictsSection(
+                districts = city.districts,
+                currentLanguage = appLanguage
             )
         }
         HorizontalDivider(
@@ -54,10 +67,4 @@ fun Cities(
             color = MaterialTheme.colorScheme.outlineVariant
         )
     }
-}
-
-@Preview
-@Composable
-private fun CitiesPreview() {
-    Cities(city = "Cairo")
 }

@@ -39,10 +39,6 @@ fun SearchScreen(
     val state = viewModel.uiState.collectAsStateWithLifecycle()
     val appLanguage = currentAppLocale().language
 
-    LaunchedEffect(Unit) {
-        viewModel.loadCitiesAndDistricts()
-    }
-
     Scaffold(
         modifier = modifier,
         topBar = {
@@ -79,16 +75,30 @@ fun SearchScreen(
                 onValueChange = viewModel::onSearchQueryChange,
                 state = state.value
             )
-            CitiesAndItsDistricts(state.value, appLanguage)
+            CitiesAndItsDistricts(
+                state.value,
+                appLanguage,
+                onCityClicked = viewModel::onCityClicked
+            )
         }
     }
 }
 
 @Composable
-fun CitiesAndItsDistricts(state: SearchUiState, appLanguage: String) {
+fun CitiesAndItsDistricts(
+    state: SearchUiState,
+    appLanguage: String,
+    onCityClicked: (String) -> Unit
+) {
     LazyColumn(modifier = Modifier.fillMaxWidth()) {
         items(state.filteredCities) { city ->
-            Cities(city = if (appLanguage == "en") city.cityName else city.cityOtherName)
+            val isExpanded = state.selectedCityId.contains(city.cityId)
+            Cities(
+                city = city,
+                isExpanded = isExpanded,
+                appLanguage = appLanguage,
+                onCityClicked = { onCityClicked(city.cityId) }
+            )
         }
     }
 }
